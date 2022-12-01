@@ -2,13 +2,18 @@ import java.io.File
 
 fun main() {
 
-    //Config Test Data and Input
-    val path = "aoc/assets"
     val fileName = "day01.txt"
-    val input:List<String>  = File(path,fileName).readLines()
-    val testFileName = "day01_test.txt"
-    val testInput = File(path,testFileName).readLines()
-
+    val input:List<String>  = FileUtil.getListOfLines(fileName);
+    val inputRegex:String = FileUtil.getTrimmedText(fileName);
+    //\n detect one line break
+    println(inputRegex.split("\n\n")
+        .map {
+            chunk -> chunk.split("\n")
+        .sumOf {
+                s: String -> s.toInt() }
+        }.sortedDescending()
+        .take(3).sum()
+    )
 
     val sums:MutableList<Int> = mutableListOf()
     var maxSum = 0
@@ -29,4 +34,5 @@ fun main() {
     for(i in lastIndex downTo  start){
         maxSum+= sortedSet.elementAt(i)
     }
+
 }
