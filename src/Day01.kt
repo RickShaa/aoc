@@ -6,14 +6,12 @@ fun main() {
     val input:List<String>  = FileUtil.getListOfLines(fileName);
     val inputRegex:String = FileUtil.getTrimmedText(fileName);
     //\n detect one line break
-    println(inputRegex.split("\n\n")
-        .map {
-            chunk -> chunk.split("\n")
-        .sumOf {
-                s: String -> s.toInt() }
-        }.sortedDescending()
-        .take(3).sum()
-    )
+   inputRegex.split("\n\n")
+        .map { chunk -> chunk.split("\n")
+        .sumOf { s: String -> s.toInt() } }
+        .sortedDescending()
+        .take(3)
+        .sum()
 
     val sums:MutableList<Int> = mutableListOf()
     var maxSum = 0
