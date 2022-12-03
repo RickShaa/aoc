@@ -5,19 +5,7 @@ fun main() {
     val testFileName = "day03_test.txt"
     val input:List<String> = FileUtil.getListOfLines(fileName);
 
-    //Source for generic concat function: https://www.techiedelight.com/concatenate-multiple-lists-kotlin/
-    fun <T> concat(vararg lists:List<T>):List<T>{
-        return listOf(*lists).flatten()
-    }
 
-    //Helper function for generating a list of chars
-    fun createLetters(start:Int, end:Int):List<Char>{
-        var letters = mutableListOf<Char>();
-        for(i in start..end){
-            letters.add(i.toChar())
-        }
-        return letters
-    }
     //Helper function for mapping chars to priority numbers
     fun createPriorityMap(letters:List<Char>):Map<Char, Int>{
         var map = mutableMapOf<Char, Int>()
@@ -26,9 +14,9 @@ fun main() {
     }
 
     //Generate alphabet from a...zA...Z
-    val lowerCaseLetters = createLetters(97,122)
-    val upperCaseLetters = createLetters(65,90)
-    val letters = concat(lowerCaseLetters,upperCaseLetters)
+    val lowerCaseLetters = AlphabetUtil.createLetters(97,122)
+    val upperCaseLetters = AlphabetUtil.createLetters(65,90)
+    val letters = ListUtil.concat(lowerCaseLetters,upperCaseLetters)
     //prioritize each letter
     val priorityMap = createPriorityMap(letters)
 
@@ -48,7 +36,7 @@ fun main() {
 
     //sum priorities up
     val sum = input.map{ it.splitInHalf() }.map { rucksack -> priorityMap[rucksack.commonChars().first()]!! }.sumOf { s -> s }
-
+    println(sum)
 
     //PART 2
     //group by three
