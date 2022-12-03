@@ -29,18 +29,38 @@ fun main() {
     val priorityMap = createPriorityMap(letters)
 
 
+    //PART 1
     fun String.splitInHalf():List<String>{
         val midIndex = this.length /2;
         return listOf(this.substring(0, midIndex), this.substring(midIndex))
     }
 
-    fun List<String>.commonChar():Char{
+    fun List<String>.commonChars():List<Char>{
         val first = this[0].toCharArray()
         val second = this[1].toCharArray();
-        return first.map{element -> second.find { it == element }}.filterNotNull().take(1).first()
+        return first.map{element -> second.find { it == element }}.filterNotNull()
     }
 
-    println(input.map{ it.splitInHalf() }.map { rucksack -> priorityMap[rucksack.commonChar()]!! }.sumOf { s -> s })
+
+
+    val sum = input.map{ it.splitInHalf() }.map { rucksack -> priorityMap[rucksack.commonChars().first()]!! }.sumOf { s -> s }
+
+
+    //PART 2
+    //group by three
+    val groups = input.chunked(3)
+    // find common char in Triple
+    fun List<String>.commonCharTriple():Char{
+        val firstTuple = this.toMutableList().take(2)
+        val third = this[2]
+        val commonChars = firstTuple.commonChars()
+        return commonChars.firstNotNullOf { element -> third.find { it == element } }
+    }
+    //get sum
+    val badgeSum = groups.map { rucksacks -> priorityMap[rucksacks.commonCharTriple()]!!}.sumOf { s -> s }
+    println(badgeSum)
+
+
 
 }
 
