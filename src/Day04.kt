@@ -17,13 +17,21 @@ fun main() {
         }
         return bytes
     }
-    fun List<List<Byte>>.contains():Boolean{
+    //Part 1
+    fun List<List<Byte>>.containsAll():Boolean{
         val (first,second) =this
         return first.containsAll(second) || second.containsAll(first)
     }
 
+    //Part 2
+    fun List<List<Byte>>.containsSingle():Boolean{
+        val (first,second) =this
+        return first.mapNotNull { item -> second.find { it == item } }.isNotEmpty() || second.mapNotNull { item -> first.find { it == item } }
+            .isNotEmpty()
+    }
 
-    val digits = input.map { it -> it.split(",").map { it.rangeToBytes() }}.map { it.contains() }.count { it }
+
+    val digits = input.map { it -> it.split(",").map { it.rangeToBytes() }}.map { it.containsSingle() }.count { it }
     println(digits)
 
 }
