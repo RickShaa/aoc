@@ -60,20 +60,20 @@ fun main() {
 
 
     println(stacksAndCrates)
-
-    for(i in instructions.indices){
-        val numberCrates = instructions[i].numberOfCrates
-        val originStack = stacksAndCrates[instructions[i].originStack]
-        val destinationStack = stacksAndCrates[instructions[i].destinationStack]
-        if (originStack != null) {
-            for(i in originStack.size-1 downTo (originStack.size)  - numberCrates){
-                //remove origin
-                val removedCrate = originStack.removeAt(i)
-                //add to destination
-                destinationStack?.add(removedCrate)
+    fun moveFromOriginToDestination(instruction: Instruction) {
+        val originStack = stacksAndCrates[instruction.originStack]
+        val destinationStack = stacksAndCrates[instruction.destinationStack]
+        if(originStack?.size != 0){
+            val removedElement = originStack?.removeAt(originStack.size -1)
+            if (removedElement != null) {
+                destinationStack?.add(removedElement)
             }
         }
+
     }
+
+    instructions.map { instruction -> repeat(instruction.numberOfCrates){moveFromOriginToDestination(instruction)} }
+
 
     //println(stacks)
     println(stacksAndCrates)
