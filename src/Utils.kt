@@ -10,6 +10,10 @@ object FileUtil {
         return File(pathName, fileName).readText().trim();
     }
 
+    fun getText(fileName: String):String{
+        return File(pathName, fileName).readText()
+    }
+
     fun getListOfLines(fileName: String):List<String>{
         return File(pathName, fileName).readLines();
     }
