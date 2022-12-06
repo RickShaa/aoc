@@ -73,10 +73,20 @@ fun main() {
             destinationStack?.addLast(removedElement)
         }
     }
-    instructions.map { instruction -> repeat(instruction.numberOfCrates){moveFromOriginToDestination(instruction)} }
+    instructions.map { instruction -> instruction.moveOrdered(stacks) }
 
     println(getTopCrates(stacks))
 }
 
 
-data class Instruction(val numberOfCrates:Int,val originStack:Int, val destinationStack:Int)
+data class Instruction(val numberOfCrates:Int,val originStack:Int, val destinationStack:Int){
+    fun moveOrdered(stacks: MutableMap<Int, ArrayDeque<Char>>){
+        val originStack = stacks[originStack]
+        val destinationStack = stacks[destinationStack]
+        val tempList = mutableListOf<Char>()
+        for (i in  1..numberOfCrates){
+           tempList.add(originStack?.removeLast()!!)
+        }
+        tempList.reversed().forEach { it-> destinationStack?.addLast(it) }
+    }
+}
