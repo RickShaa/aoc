@@ -8,7 +8,8 @@ fun main() {
     val input = FileUtil.getTrimmedText(fileName);
 
     fun isStarterPacket(packet:List<Char>):Boolean{
-        return packet.distinct().size == packet.size
+        //transform to set, because set does not allow duplicates
+        return packet.toSet().size == packet.size
     }
 
     fun List<Char>.findDistinctSequence(size:Byte): Int? {
@@ -23,6 +24,6 @@ fun main() {
     }
 
     val dataStream = input.toCharArray().toList();
-    println(dataStream.findDistinctSequence(14))
+    println(dataStream.findDistinctSequence(4))
 
 }
