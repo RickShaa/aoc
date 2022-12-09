@@ -8,7 +8,6 @@ fun main() {
     val input = FileUtil.getTrimmedText(fileName);
 
     fun isStarterPacket(packet:List<Char>):Boolean{
-        println(packet)
         return packet.distinct().size == packet.size
     }
 
