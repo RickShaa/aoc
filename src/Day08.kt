@@ -9,6 +9,9 @@ fun main() {
     val trees = input.map { it -> it.toCharArray().map { it.toString().toInt() } }
 
 
+
+    //PART1
+
     fun List<List<Int>>.countEdges():Int{
         val sideA = this.size
         val sideB = this[0].size - 2
@@ -30,6 +33,68 @@ fun main() {
         return true;
     }
 
+    fun treeIsVisibleFromBelow(posY:Int, posX:Int):Boolean{
+        val tree = currentTree(posY,posX)
+        for(y in (trees.size -1) downTo    (posY + 1) ){
+            if(trees[y][posX] >= tree){
+                return false
+            }
+        }
+        return true;
+    }
+
+    fun isTreeVisibleInColumn(posY:Int, posX:Int):Boolean{
+        return treeIsVisibleFromAbove(posY,posX) || treeIsVisibleFromBelow(posY,posX)
+    }
+
+    fun isTreeVisibleToLeft(posY:Int, posX:Int):Boolean{
+        val tree = currentTree(posY,posX)
+        val rowOfTrees = trees[posY]
+        for(x in 0 until   posX){
+            if(rowOfTrees[x] >= tree){
+                return false
+            }
+        }
+        return true;
+    }
+
+
+
+    fun isTreeVisibleToRight(posY:Int, posX:Int):Boolean{
+        val tree = currentTree(posY,posX)
+        val rowOfTrees = trees[posY]
+        for(x in (rowOfTrees.size -1) downTo    (posX + 1)){
+            if(rowOfTrees[x] >= tree){
+                return false
+            }
+        }
+        return true;
+    }
+
+
+    fun isTreeVisibleInRow(posY:Int, posX:Int):Boolean{
+        // scans left and right
+        return isTreeVisibleToLeft(posY, posX) || isTreeVisibleToRight(posY,posX)
+    }
+
+
+    fun getNumberOfVisibleTrees(trees:List<List<Int>>):Int{
+        val edgeTrees = trees.countEdges()
+        var visibleTrees = edgeTrees;
+        //skip first and last row because it is already visible
+        for(y in 1 until trees.size - 1){
+            for (x in 1 until trees[y].size -1){
+                if(isTreeVisibleInColumn(y,x) || isTreeVisibleInRow(y,x)){
+                    visibleTrees++
+                }
+            }
+        }
+        return visibleTrees
+    }
+
+
+    //PART 2
+
     fun getViewingDistanceAbove(posY:Int, posX:Int):Int{
         val tree = currentTree(posY,posX)
         var distance = 0;
@@ -46,15 +111,6 @@ fun main() {
         return distance;
     }
 
-    fun treeIsVisibleFromBelow(posY:Int, posX:Int):Boolean{
-        val tree = currentTree(posY,posX)
-        for(y in (trees.size -1) downTo    (posY + 1) ){
-            if(trees[y][posX] >= tree){
-                return false
-            }
-        }
-        return true;
-    }
     fun getViewingDistanceFromBelow(posY:Int, posX:Int):Int{
         val tree = currentTree(posY,posX)
         var distance = 0;
@@ -69,21 +125,6 @@ fun main() {
             }
         }
         return distance;
-    }
-
-    fun isTreeVisibleInColumn(posY:Int, posX:Int):Boolean{
-        return treeIsVisibleFromAbove(posY,posX) || treeIsVisibleFromBelow(posY,posX)
-    }
-
-    fun isTreeVisibleToLeft(posY:Int, posX:Int):Boolean{
-        val tree = currentTree(posY,posX)
-        val rowOfTrees = trees[posY]
-        for(x in 0 until   posX){
-            if(rowOfTrees[x] >= tree){
-                return false
-            }
-        }
-        return true;
     }
 
     fun getViewingDistanceLeft(posY:Int, posX:Int):Int{
@@ -102,16 +143,6 @@ fun main() {
         return distance;
     }
 
-    fun isTreeVisibleToRight(posY:Int, posX:Int):Boolean{
-        val tree = currentTree(posY,posX)
-        val rowOfTrees = trees[posY]
-        for(x in (rowOfTrees.size -1) downTo    (posX + 1)){
-            if(rowOfTrees[x] >= tree){
-                return false
-            }
-        }
-        return true;
-    }
 
     fun getViewingDistanceRight(posY:Int, posX:Int):Int{
         val tree = currentTree(posY,posX)
@@ -131,24 +162,6 @@ fun main() {
     }
 
 
-    fun isTreeVisibleInRow(posY:Int, posX:Int):Boolean{
-        // scans left and right
-        return isTreeVisibleToLeft(posY, posX) || isTreeVisibleToRight(posY,posX)
-    }
-
-    fun getNumberOfVisibleTrees(trees:List<List<Int>>):Int{
-        val edgeTrees = trees.countEdges()
-        var visibleTrees = edgeTrees;
-        //skip first and last row because it is already visible
-        for(y in 1 until trees.size - 1){
-            for (x in 1 until trees[y].size -1){
-                if(isTreeVisibleInColumn(y,x) || isTreeVisibleInRow(y,x)){
-                    visibleTrees++
-                }
-            }
-        }
-        return visibleTrees
-    }
     val scenicScores = mutableListOf<Int>()
     fun getScenicScores(trees:List<List<Int>>){
         for(y in trees.indices){
