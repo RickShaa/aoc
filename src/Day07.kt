@@ -73,6 +73,27 @@ fun main() {
 
     getSizes(rootDirectory)
     println(sizes.sum())
+
+    //PART 2
+    val FILE_SYSTEM_SPACE = 70000000
+    val REQUIRED_SPACE = 30000000
+    val usedSpace = rootDirectory.getDirectorySize()
+    val availableSpace = FILE_SYSTEM_SPACE - usedSpace
+    val missingSpace = REQUIRED_SPACE - availableSpace
+    var potentialDirsForDeletion = mutableListOf<Int>()
+
+    fun findDirectoryForDeletion(node:Directory){
+        val dirSize = node.getDirectorySize()
+        if(dirSize >= missingSpace){
+            potentialDirsForDeletion.add(dirSize)
+            if(node.directories.size > 0){
+                node.directories.forEach { findDirectoryForDeletion(it) }
+            }
+        }
+    }
+
+    findDirectoryForDeletion(rootDirectory)
+    println(potentialDirsForDeletion.minOf { it })
 }
 
 enum class ActionType {
