@@ -5,6 +5,9 @@ plugins {
 repositories {
     mavenCentral()
 }
+dependencies {
+    implementation("com.beust:klaxon:5.5")
+}
 
 tasks {
     sourceSets {

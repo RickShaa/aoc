@@ -36,3 +36,9 @@ object AlphabetUtil {
         return letters
     }
 }
+
+object StringUtil {
+    fun toChar(s:String): Char {
+        return s.toCharArray()[0]
+    }
+}
