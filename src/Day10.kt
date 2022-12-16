@@ -41,6 +41,11 @@ fun main() {
         }
     }
 
+    fun draw(pixels:MutableList<String>, x:Int){
+        drawPixel(pixels,x) //during cycle
+        drawRow(pixels)
+    }
+
     val input = FileUtil.getListOfLines(fileName);
     var x = 1;
     val relevantCycle = mutableListOf(20,60,100,140,180,220)
@@ -52,15 +57,13 @@ fun main() {
         val cpuInstruction = input[i].getCPUInstruction()
         if(cpuInstruction.size == 1){
             currentCycle++ //start cycle
-            drawPixel(pixels,x) // during cycle
-            drawRow(pixels)
+            draw(pixels,x)
             signalStrength+=calculateSignalStrength(currentCycle, relevantCycle, x)
         }else{
             for(i in 0..1){
                 //DRAWS PIXEL
                 currentCycle++ //start cycle
-                drawPixel(pixels,x) //during cycle
-                drawRow(pixels)
+                draw(pixels,x)
                 signalStrength+=calculateSignalStrength(currentCycle, relevantCycle, x)
             }
             x+= cpuInstruction[1].toInt()
