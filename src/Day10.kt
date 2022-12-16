@@ -26,13 +26,18 @@ fun main() {
         return "."
     }
 
-    fun drawPixel(pixels:MutableList<String>,currentCycle:Int,registerX:Int){
+    fun drawPixel(pixels:MutableList<String>,registerX:Int){
         if(pixels.size<40){
-            pixels.add(getPixel(registerX,pixels.size -1))
-        }else if(pixels.size == 40){
+            pixels.add(getPixel(registerX,pixels.size - 1))
+        }else{
+            pixels.add(getPixel(registerX,0))
+        }
+    }
+
+    fun drawRow(pixels:MutableList<String>){
+        if(pixels.size == 40){
             println(pixels.joinToString(""))
             pixels.removeAll(pixels)
-            pixels.add(getPixel(registerX,0))
         }
     }
 
@@ -47,18 +52,19 @@ fun main() {
         val cpuInstruction = input[i].getCPUInstruction()
         if(cpuInstruction.size == 1){
             currentCycle++ //start cycle
-            drawPixel(pixels, currentCycle,x) // during cycle
-            //signalStrength+=calculateSignalStrength(currentCycle, relevantCycle, x)
+            drawPixel(pixels,x) // during cycle
+            drawRow(pixels)
+            signalStrength+=calculateSignalStrength(currentCycle, relevantCycle, x)
         }else{
             for(i in 0..1){
                 //DRAWS PIXEL
                 currentCycle++ //start cycle
-                drawPixel(pixels,currentCycle,x) //during cycle
-                //signalStrength+=calculateSignalStrength(currentCycle, relevantCycle, x)
+                drawPixel(pixels,x) //during cycle
+                drawRow(pixels)
+                signalStrength+=calculateSignalStrength(currentCycle, relevantCycle, x)
             }
             x+= cpuInstruction[1].toInt()
         }
     }
-    println(pixels.joinToString(""))
     println(signalStrength)
 }
