@@ -54,6 +54,15 @@ fun main() {
        https://www.youtube.com/watch?v=ShU9dNUa_3g&t=2153s
      */
 
+    fun moveTail(head:Point,tail:Point){
+        val deltaX = head.x - tail.x
+        val deltaY = head.y - tail.y
+        val directionX = deltaX.coerceIn(-1,1)
+        val directionY = deltaY.coerceIn(-1,1)
+        tail.x+=directionX
+        tail.y+=directionY
+    }
+
     fun moveTail(head:Point,tail:Point, tailPos:MutableSet<Point>){
         val deltaX = head.x - tail.x
         val deltaY = head.y - tail.y
@@ -73,17 +82,27 @@ fun main() {
     }
 
     //Init head and tail position
-    val head = Point(0, 0)
-    val tail = Point(0, 0)
+    //val head = Point(0, 0)
+    //val tail = Point(0, 0)
+    val rope = Array(10){Point(0,0)}
     //Add distinct tail positions (Set)
-    val tailPositions: MutableSet<Point> = mutableSetOf(tail)
+    val tailPositions: MutableSet<Point> = mutableSetOf(rope.last())
 
     for(i in input.indices){
         val (direction,steps) = input[i].split(" ")
         for(step in 0 until steps.toInt()){
-            moveHead(direction,head)
-            if(distance(head, tail) > 1){
-                moveTail(head,tail,tailPositions)
+            moveHead(direction,rope[0])
+            for(idx in 0 until 9){
+                //start at comparing head index = 0 to index +1
+                    val head = rope[idx]
+                    val tail = rope[idx +1]
+                    if(distance(head, tail) > 1){
+                        if(idx + 1 == 9){
+                            moveTail(head,tail,tailPositions)
+                        }else{
+                            moveTail(head, tail)
+                        }
+                    }
             }
         }
     }
