@@ -16,6 +16,7 @@ fun main() {
             Direction.D -> head.y -= 1
         }
     }
+
     /*
         CHESSBOARD DISTANCE
 
@@ -26,6 +27,10 @@ fun main() {
         horizontal and vertical movements
 
         If distance > 1 tail can follow head safely
+
+        Source theory:
+        https://towardsdatascience.com/3-distances-that-every-data-scientist-should-know-59d864e5030a
+
 
         Source Kotlin Advent of Code Day 9 Video
         https://www.youtube.com/watch?v=ShU9dNUa_3g&t=2153s
@@ -50,22 +55,24 @@ fun main() {
        V represents an arrow from the origin (0,0) to (1,2),
        giving us the direction to move in
 
+        Source Study Smarter:
+        https://www.studysmarter.de/schule/mathe/geometrie/richtungsvektor/
+
+
        Source Kotlin Advent of Code Day 9 Video
        https://www.youtube.com/watch?v=ShU9dNUa_3g&t=2153s
      */
 
     fun moveTail(head:Point,tail:Point){
-        val deltaX = head.x - tail.x
-        val deltaY = head.y - tail.y
-        val directionX = deltaX.coerceIn(-1,1)
-        val directionY = deltaY.coerceIn(-1,1)
+        val(dX,dY) = head.delta(tail)
+        val directionX = dX.coerceIn(-1,1)
+        val directionY = dY.coerceIn(-1,1)
         tail.x+=directionX
         tail.y+=directionY
     }
 
     fun moveTail(head:Point,tail:Point, tailPos:MutableSet<Point>){
-        val deltaX = head.x - tail.x
-        val deltaY = head.y - tail.y
+        val(dX,dY) = head.delta(tail)
         /*
             Ensures value to be in a specific range
 
@@ -73,8 +80,8 @@ fun main() {
             next to head, not make tail land on head. This would happen if we would move
             the entire length of the direction vector
         */
-        val directionX = deltaX.coerceIn(-1,1)
-        val directionY = deltaY.coerceIn(-1,1)
+        val directionX = dX.coerceIn(-1,1)
+        val directionY = dY.coerceIn(-1,1)
 
         tail.x+=directionX
         tail.y+=directionY
@@ -109,7 +116,13 @@ fun main() {
 
     println(tailPositions.count())
 }
-data class Point(var x:Int, var y:Int)
+data class Point(var x:Int, var y:Int){
+    fun delta(p2:Point):Pair<Int,Int>{
+        val deltaX = this.x - p2.x
+        val deltaY = this.y - p2.y
+        return Pair(deltaX,deltaY)
+    }
+}
 
 enum class Direction {
     L,
