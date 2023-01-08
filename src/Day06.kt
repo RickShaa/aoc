@@ -63,6 +63,8 @@ fun main() {
      * Optimized Solution 3 BITWISE
      * Source: https://www.youtube.com/watch?v=U16RnpV48KQ&t=132s
      *
+     * binary literal in kotlin 0b0101 "0b" meaning binary representation, 0101 = 5 (dez)
+     *
      * Explanation:
      * 'a' = 97
      * 'b' = 98 ....
@@ -70,14 +72,30 @@ fun main() {
      * State is an unsigned int which can store 32 bits (1 or 0)
      *
      * 'a' % 32 will result in a number between 0 - 31. This is equal to the amount of bits in an UInt
+     * after using the remainder operator the shl operator
+     * shifts a single BIT(1 = 2^0) in to the u32 store, basically setting a switch to ON
+     * (we have the char 'a' stored as one bit within u32 int at index 'a' % 32)
      *
-     * The state should act as a binary store for our characters
+     * Now whenever we encounter two numbers as 32bits,
+     * Where one equals our char store with all previous chars stored as an ON switch at a specific index 'a' % 32
+     * nad we bitwise OR them the result of the new state will match the previous state. 0011 OR 0010 = 0011
+     * Because:
+     * BITWISE OR:
+     * 1 | 0 = 1
+     * 1 | 1 = 1
+     * 0 | 1 = 1
+     * 0 | 0 = 0
+     * in other words: if our newly calculated index (represented as a single 1 (or ON switch) within an u32 int)
+     * is bitwise OR with our previous state we will receive the exact state because all ON state in our store and 0 state
+     * in our bitwise shifted char will revert to ON (1) and our match, ON (1) in the store  ON (1) for bitwise shifter char
+     * will return 1
+     * if the char is not set in our store as on, the resulting "new state" will have one more bit set to on than in the previous state
+     * and therefore will not be equal.
      *
+     * Example with Input 'a','a','a','b','c'
+     * char.code.toByte() transforms input to -> [97, 97 ,97, 98, 99]
      *
-     * Example with Input 'a','b','a','b','c'
-     * char.code.toByte() transforms input to -> [97, 98, 97, 98, 99]
-     *
-     * First window is [97, 98, 97]
+     * First window is [97, 97, 97]
      * state = 0
      *
      * 1. Iterate over bytes
@@ -95,6 +113,22 @@ fun main() {
      *          00000011 = reassign state
      *      1.4 compare prev and state
      *          prev = 00000001 != 00000011
+     *          continue loop
+     *
+     * 2. iteration
+     *
+     * prev = state = 00000011 (base2) = 3(base10)
+     *      1.1 Modulo
+     *          97 % 32 = 1 = m
+     *      1.2 shl
+     *          1 shl m = 00000010
+     *      1.3 bitwise or with state and reassign
+     *          00000011
+     *          00000010
+     *          --------
+     *          00000011 state reassigned
+     *      1.4 compare state with prev state
+     *          00000011 = 00000011
      *
      */
 
@@ -115,9 +149,9 @@ fun main() {
     }
 
     fun distinctSequence(seqLen:Int): Any {
-        val windowedData = listOf<Char>('a','b','a','b','c').map { it.code.toByte() }.also { println(it) }.windowed(seqLen)
+        val windowedData = dataStream.map { it.code.toByte() }.also { println(it) }.windowed(seqLen)
         return windowedData.indexOfFirst { it.bitwise() } + seqLen
     }
-    println(distinctSequence(3))
+    println(distinctSequence(4))
 
 }
