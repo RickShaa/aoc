@@ -69,27 +69,27 @@ fun main() {
      * 'a' = 97
      * 'b' = 98 ....
      *
-     * State is an unsigned int which can store 32 bits (1 or 0)
      *
-     * 'a' % 32 will result in a number between 0 - 31. This is equal to the amount of bits in an UInt
-     * after using the remainder operator the shl operator
+     * 'a' % 32 will result in a number between 0 - 31.
+     * This is equal to the amount of bits in an UInt
+     * after using the remainder operator the shl(shift left) operator
      * shifts a single BIT(1 = 2^0) in to the u32 store, basically setting a switch to ON
      * (we have the char 'a' stored as one bit within u32 int at index 'a' % 32)
      *
      * Now whenever we encounter two numbers as 32bits,
      * Where one equals our char store with all previous chars stored as an ON switch at a specific index 'a' % 32
-     * nad we bitwise OR them the result of the new state will match the previous state. 0011 OR 0010 = 0011
-     * Because:
+     * and we bitwise OR those numbers, two scenarios can occur
      * BITWISE OR:
      * 1 | 0 = 1
      * 1 | 1 = 1
      * 0 | 1 = 1
      * 0 | 0 = 0
-     * in other words: if our newly calculated index (represented as a single 1 (or ON switch) within an u32 int)
-     * is bitwise OR with our previous state we will receive the exact state because all ON state in our store and 0 state
-     * in our bitwise shifted char will revert to ON (1) and our match, ON (1) in the store  ON (1) for bitwise shifter char
-     * will return 1
-     * if the char is not set in our store as on, the resulting "new state" will have one more bit set to on than in the previous state
+     * 1. Our newly calculated index represented as a single 1 (or ON switch) within an u32 int
+     * is bitwise OR with our state, we will receive the exact same state,
+     * because all ON state in our store and the OFF states of our bitwise shifted char will revert to ON (1)
+     * and our match, ON (1) in the store and ON (1) for bitwise shifter char will return 1
+     *
+     * 2. if the char is not set in our store as on, the resulting "new state" will have one more bit set to ON
      * and therefore will not be equal.
      *
      * Example with Input 'a','a','a','b','c'
