@@ -134,7 +134,7 @@ fun main() {
 
     fun List<Byte>.bitwise():Boolean{
         /**
-         * UInt = 32 bit unsigned (0 - 2^32 -1) Integers
+         * UInt = 32 bit unsigned (0 up to 2^32 -1) Integers
          *source: https://kotlinlang.org/docs/unsigned-integer-types.html#unsigned-arrays-and-ranges
          */
         var state:UInt = 0u
