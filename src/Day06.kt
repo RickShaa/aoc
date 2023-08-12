@@ -104,7 +104,7 @@ fun main() {
      *
      *      1.1 Modulo
      *          97 % 32 = 1 = m
-     *      1.2 shl (why start with 1, because 0 in binary is 00000001 ???)
+     *      1.2 shl (why start with 1, because 1 in binary is 00000001)
      *          1 shl m = 00000010
      *      1.3 bitwise OR and reassign state
      *          00000001
