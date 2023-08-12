@@ -100,7 +100,7 @@ fun main() {
      *
      * 1. Iterate over bytes
      * -> 97 in binary =  1100001
-     * prev = state = 0 = 00000001
+     * prev = state = 0 = 00000000
      *
      *      1.1 Modulo
      *          97 % 32 = 1 = m
